@@ -4,8 +4,9 @@ from datetime import datetime, timedelta
 
 OUTPUT_GPIO = 18
 INPUT_GPIO = 17
+FILE = "../IRcodes"
 
-system = irrp_lib("../IRcodes")
+system = irrp_lib(FILE)
 system.prepare(OUTPUT_GPIO, "P", "light", False)
 
 hour_input = -1
@@ -17,7 +18,7 @@ while minute_input < 0 or minute_input > 60:
     minute_input = int(input("Minute: "))
 
 
-t = datetime.now() # + timedelta(days=1)
+t = datetime.now() + timedelta(days=1)
 t = t.replace(hour=hour_input, minute=minute_input, second=0)
 
 while datetime.now() < t:
