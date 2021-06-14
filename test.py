@@ -1,13 +1,21 @@
 from irrp_lib import irrp_lib
-import time
-import sched
+from datetime import datetime, timedelta
 
-scheduler = sched.scheduler(time.time, time.sleep)
+OUTPUT_GPIO = 18
+INPUT_GPIO = 17
+
 system = irrp_lib("../IRcodes")
+system.prepare(OUTPUT_GPIO, "P", "light", False)
 
-system.prepare(18, "P", "light", False)
+minutes = datetime.now().minute + 1
 
-scheduler.enter(2, 1, system.run, argument=('first',))
-scheduler.enter(4, 1, system.run, argument=('second',))
-system.run()
-scheduler.run()
+while True:
+    time = datetime.now() + timedelta(minutes=1)
+    time.replace(second=0)
+    
+    while time.now < time:
+        time.sleep(1)
+
+    system.run()
+    time.sleep(1)
+    system.run()
