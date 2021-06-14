@@ -10,13 +10,11 @@ system.prepare(OUTPUT_GPIO, "P", "light", False)
 
 minutes = datetime.now().minute + 1
 
-while True:
-    t = datetime.now() + timedelta(minutes=1)
-    t = t.replace(second=0)
+#while True:
+t = datetime.now() # + timedelta(days=1)
+t = t.replace(hour=22, minute=31, second=0)
 
-    while datetime.now() < t:
-        time.sleep(1)
-
-    system.run()
+while datetime.now() < t:
     time.sleep(1)
-    system.run()
+
+system.run()
