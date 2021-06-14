@@ -12,8 +12,8 @@ minutes = datetime.now().minute + 1
 while True:
     time = datetime.now() + timedelta(minutes=1)
     time.replace(second=0)
-    
-    while time.now < time:
+
+    while datetime.now < time:
         time.sleep(1)
 
     system.run()
