@@ -39,6 +39,8 @@ args = p.parse_args()
 class irrp_lib:
     GPIO       = None
     FILE       = None
+    TYPE       = None
+    
     
     GLITCH     = 100
     PRE_MS     = 200
@@ -48,6 +50,8 @@ class irrp_lib:
     SHORT      = 10
     GAP_MS     = 100
     TOLERANCE  = 15
+    CONFIRM    = True
+
 
     POST_US    = 0
     PRE_US     = 0
@@ -59,6 +63,7 @@ class irrp_lib:
     in_code = False
     code = []
     fetching_code = False
+    id = ""
 
     def __init__(self, file):
         self.FILE = file
@@ -311,14 +316,20 @@ class irrp_lib:
                 in_code = False
                 self.end_of_code()
 
-    def run(self, gpio, type, arg, confirm):
+    def prepare(self, gpio, type, arg, confirm):
         self.GPIO = gpio
+        self.TYPE = type
+        self.id = arg
+        self.CONFIRM = confirm
+
+
+    def run(self):
         pi = pigpio.pi() # Connect to Pi.
 
         if not pi.connected:
             exit(0)
 
-        if type == "R": # Record.
+        if self.TYPE == "R": # Record.
             try:
                 f = open(self.FILE, "r")
                 records = json.load(f)
@@ -335,7 +346,7 @@ class irrp_lib:
             # Process each id
 
             print("Recording")
-            print("Press key for '{}'".format(arg))
+            print("Press key for '{}'".format(self.id))
             code = []
             fetching_code = True
             while fetching_code:
@@ -343,13 +354,13 @@ class irrp_lib:
             print("Okay")
             time.sleep(0.5)
 
-            if confirm:
+            if self.CONFIRM:
                 press_1 = code[:]
                 done = False
 
                 tries = 0
                 while not done:
-                    print("Press key for '{}' to confirm".format(arg))
+                    print("Press key for '{}' to confirm".format(self.id))
                     code = []
                     fetching_code = True
                     while fetching_code:
@@ -358,7 +369,7 @@ class irrp_lib:
                     the_same = self.compare(press_1, press_2)
                     if the_same:
                         done = True
-                        records[arg] = press_1[:]
+                        records[self.id] = press_1[:]
                         print("Okay")
                         time.sleep(0.5)
                     else:
@@ -366,11 +377,11 @@ class irrp_lib:
                         if tries <= 3:
                             print("No match")
                         else:
-                            print("Giving up on key '{}'".format(arg))
+                            print("Giving up on key '{}'".format(self.id))
                             done = True
                         time.sleep(0.5)
             else: # No confirm.
-                records[arg] = code[:]
+                records[self.id] = code[:]
 
                 pi.set_glitch_filter(self.GPIO, 0) # Cancel glitch filter.
                 pi.set_watchdog(self.GPIO, 0) # Cancel watchdog.
@@ -383,7 +394,7 @@ class irrp_lib:
                 f.write(json.dumps(records, sort_keys=True).replace("],", "],\n")+"\n")
                 f.close()
 
-        elif type == "P": # Playback.
+        elif self.TYPE == "P": # Playback.
 
             try:
                 f = open(self.FILE, "r")
@@ -405,9 +416,9 @@ class irrp_lib:
                 print("Playing")
 
             
-            if arg in records:
+            if self.id in records:
 
-                code = records[arg]
+                code = records[self.id]
 
                 # Create wave
 
@@ -438,7 +449,7 @@ class irrp_lib:
                 pi.wave_chain(wave)
 
                 if self.VERBOSE:
-                    print("key " + arg)
+                    print("key " + self.id)
 
                 while pi.wave_tx_busy():
                     time.sleep(0.002)
@@ -455,7 +466,7 @@ class irrp_lib:
 
                 spaces_wid = {}
             else:
-                print("Id {} not found".format(arg))
+                print("Id {} not found".format(self.id))
 
         pi.stop() # Disconnect from Pi.
 
