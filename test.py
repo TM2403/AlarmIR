@@ -6,8 +6,8 @@ scheduler = sched.scheduler(time.time, time.sleep)
 system = irrp_lib("../IRcodes")
 
 
-scheduler.enter(2, 1, system.run(18, "P", "light", False), ('first',))
-scheduler.enter(4, 1, system.run(18, "P", "light", False), ('second',))
+scheduler.enter(12, 1, system.run(18, "P", "light", False), ('first',))
+scheduler.enter(24, 1, system.run(18, "P", "light", False), ('second',))
 
 
 
