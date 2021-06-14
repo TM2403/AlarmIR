@@ -11,3 +11,4 @@ scheduler.enter(24, 1, system.run(18, "P", "light", False), ('second',))
 
 
 
+scheduler.run()
