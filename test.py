@@ -9,5 +9,5 @@ system.prepare(18, "P", "light", False)
 
 scheduler.enter(2, 1, system.run, argument=('first',))
 scheduler.enter(4, 1, system.run, argument=('second',))
-
+system.run()
 scheduler.run()
