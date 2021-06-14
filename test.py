@@ -13,7 +13,7 @@ while True:
     t = datetime.now() + timedelta(minutes=1)
     t = t.replace(second=0)
 
-    while datetime.now < t:
+    while datetime.now() < t:
         t.sleep(1)
 
     system.run()
