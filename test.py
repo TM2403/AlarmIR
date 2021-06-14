@@ -1,4 +1,5 @@
 from irrp_lib import irrp_lib
+import time
 from datetime import datetime, timedelta
 
 OUTPUT_GPIO = 18
@@ -14,8 +15,8 @@ while True:
     t = t.replace(second=0)
 
     while datetime.now() < t:
-        t.sleep(1)
+        time.sleep(1)
 
     system.run()
-    t.sleep(1)
+    time.sleep(1)
     system.run()
