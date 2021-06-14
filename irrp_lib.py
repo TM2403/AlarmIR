@@ -66,7 +66,6 @@ class irrp_lib:
         self.POST_US    = self.POST_MS * 1000
         self.PRE_US     = self.PRE_MS  * 1000
         self.GAP_S      = self.GAP_MS  / 1000.0
-        self.CONFIRM    = not self.NO_CONFIRM
         self.TOLER_MIN =  (100 - self.TOLERANCE) / 100.0
         self.TOLER_MAX =  (100 + self.TOLERANCE) / 100.0
     
