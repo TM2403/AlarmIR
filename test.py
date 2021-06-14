@@ -7,7 +7,7 @@ system = irrp_lib("../IRcodes")
 
 system.prepare(18, "P", "light", False)
 
-scheduler.enter(2, 1, system.run, ('first',))
-scheduler.enter(4, 1, system.run, ('second',))
+scheduler.enter(2, 1, system.run, argument=('first',))
+scheduler.enter(4, 1, system.run, argument=('second',))
 
 scheduler.run()
