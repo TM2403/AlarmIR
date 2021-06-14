@@ -37,7 +37,6 @@ args = p.parse_args()
 """
 
 class irrp_lib:
-
     GPIO       = None
     FILE       = None
     
@@ -61,8 +60,7 @@ class irrp_lib:
     code = []
     fetching_code = False
 
-    def __init__(self, gpio, file):
-        self.GPIO = gpio
+    def __init__(self, file):
         self.FILE = file
 
         self.POST_US    = self.POST_MS * 1000
@@ -314,7 +312,8 @@ class irrp_lib:
                 in_code = False
                 self.end_of_code()
 
-    def run(self, type, arg, confirm):
+    def run(self, gpio, type, arg, confirm):
+        self.GPIO = gpio
         pi = pigpio.pi() # Connect to Pi.
 
         if not pi.connected:
@@ -385,7 +384,7 @@ class irrp_lib:
                 f.write(json.dumps(records, sort_keys=True).replace("],", "],\n")+"\n")
                 f.close()
 
-        else: # Playback.
+        elif type == "P": # Playback.
 
             try:
                 f = open(self.FILE, "r")
