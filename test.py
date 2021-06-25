@@ -13,7 +13,7 @@ hour_input = 23
 #while hour_input < 0 or hour_input > 24:
 #    hour_input = int(input("Hour: "))
 
-minute_input = 0
+minute_input = 2
 #while minute_input < 0 or minute_input > 60:
 #    minute_input = int(input("Minute: "))
 
