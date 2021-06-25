@@ -18,7 +18,7 @@ while minute_input < 0 or minute_input > 60:
     minute_input = int(input("Minute: "))
 
 
-t = datetime.now() + timedelta(days=1)
+t = datetime.now()# + timedelta(days=1)
 t = t.replace(hour=hour_input, minute=minute_input, second=0)
 
 while datetime.now() < t:
