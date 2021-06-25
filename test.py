@@ -9,16 +9,16 @@ FILE = "../IRcodes"
 system = irrp_lib(FILE)
 system.prepare(OUTPUT_GPIO, "P", "light", False)
 
-hour_input = 23
+hour_input = 7
 #while hour_input < 0 or hour_input > 24:
 #    hour_input = int(input("Hour: "))
 
-minute_input = 2
+minute_input = 30
 #while minute_input < 0 or minute_input > 60:
 #    minute_input = int(input("Minute: "))
 
 
-t = datetime.now()# + timedelta(days=1)
+t = datetime.now() + timedelta(days=1)
 t = t.replace(hour=hour_input, minute=minute_input, second=0)
 
 while datetime.now() < t:
